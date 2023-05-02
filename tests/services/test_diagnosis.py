@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime
 import random
 import string
 from fastapi import status
