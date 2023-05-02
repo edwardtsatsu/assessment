@@ -52,3 +52,16 @@ def test_category_creation(db):
     assert category.id is not None
     assert category.title == "Test Diagnosis Code"
     assert category.code == code
+
+
+def test_file_upload_creation(db):
+    file_upload = models.FileUpload(email_add="test@email.com", file_name='test.csv',file_type='csv')
+    db.add(file_upload)
+    db.commit()
+
+    db.refresh(file_upload)
+
+    assert file_upload.id is not None
+    assert file_upload.email_add == "test@email.com"
+    assert file_upload.file_name == "test.csv"
+
