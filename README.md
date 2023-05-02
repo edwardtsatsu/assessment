@@ -65,7 +65,11 @@ alembic upgrade head
 
 ### To downgrade migration use
 ```bash
-alembic downgrade -1 or version_name
+alembic downgrade -1
+
+or
+
+alembic downgrade {version_name}
 ```
 
 ## Contributing
@@ -73,5 +77,5 @@ alembic downgrade -1 or version_name
 Thank you for taking time to go through this!!
 
 
-### License
+## License
 This project is licensed under the MIT License.
