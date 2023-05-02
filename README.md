@@ -4,9 +4,7 @@ This assessment is to test how I tackle problems, how fast I learn new technolog
 
 This project is build with python run on the FASTAPI framework. All logs from the application are set to papertrail
 
-## Install
-
-### To install this project, follow these steps:
+## Installation
 
 ### clone
 ```bash
