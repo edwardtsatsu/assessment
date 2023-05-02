@@ -25,12 +25,12 @@ pip install -r requirements.txt
 
 ## Run Project
 
-### Run migrations to create tales
+### Run migrations to create tables
 ```bash
 alembic upgrade head
 ```
 
-### Run test cases (OPTIONAl)
+### Run test cases (OPTIONAL)
 ```bash
 pytest
 ```
@@ -45,6 +45,10 @@ uvicorn app.main:app --reload
 celery -A app.task.celery worker --loglevel=info --pool=solo
 ```
 
+## API Documentation
+```
+http://127.0.0.1:8000/docs
+```
 
 ## Other Usage
 
