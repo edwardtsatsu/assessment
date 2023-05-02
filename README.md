@@ -2,8 +2,11 @@
 
 This assessment is to test how I tackle problems, how fast I learn new technologies, and my level of knowledge right now.
 
+This project is build with python run on the FASTAPI framework
+
 ## Install and Run Project
 
+### clone the project using:
 ```bash
 git clone https://github.com/edwardtsatsu/assessment.git
 ```
