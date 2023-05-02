@@ -71,3 +71,7 @@ alembic downgrade -1 or version_name
 ## Contributing
 
 Thank you for taking time to go through this!!
+
+
+### License
+This project is licensed under the MIT License.
