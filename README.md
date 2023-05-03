@@ -33,6 +33,11 @@ alembic upgrade head
 pytest
 ```
 
+### Run the application with docker
+```bash
+docker-compose --env-file .env up -d
+```
+
 ### start project using
 ```bash
 uvicorn app.main:app --reload
