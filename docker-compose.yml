@@ -1,21 +1,33 @@
 version: "3.9"
 services:
-  app:
-    build: .
-    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-    ports:
-      - "8000:8000"
-    volumes:
-      - .:/app
   db:
-    image: postgres
+    image: postgres:15-alpine
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
-      POSTGRES_DB: ${POSTGRES_DB:-app_db}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
     ports:
       - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data/
+    networks:
+      - api-network
+
+  app:
+    build: .
+    working_dir: /assessment
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - /assessment
+    networks:
+      - api-network
+
 volumes:
   db-data:
+    driver: local
+
+networks:
+  api-network:
+    driver: bridge
