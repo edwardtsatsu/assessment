@@ -50,7 +50,7 @@ celery -A app.task.celery worker --loglevel=info --pool=solo
 
 ## API Documentation
 ```
-http://127.0.0.1:8000/docs
+http://127.0.0.1:8000/redoc
 ```
 
 ## Other Usage
