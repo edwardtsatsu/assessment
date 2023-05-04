@@ -2,6 +2,8 @@ version: "3.9"
 services:
   db:
     image: postgres:15-alpine
+    hostname: postgresdb
+    container_name: postgresdb
     environment:
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}

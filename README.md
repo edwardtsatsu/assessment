@@ -16,68 +16,43 @@ git clone https://github.com/edwardtsatsu/assessment.git
 cd assessment
 ```
 
-### install dependencies and libs
+### Setting Up Credentials
 ```bash
-pip install -r requirements.txt
+Rename the .env.example file to .env
 ```
 
-## Run Project
-
-### Run migrations to create tables
+### Run application with Docker Compose
 ```bash
-alembic upgrade head
+docker-compose up --build
 ```
 
-### Run test cases (OPTIONAL)
+### Stop application using Docker Compose
 ```bash
-pytest
+docker-compose down -v
 ```
 
-### Run the application with docker
+## Additional Information [Not Compulsory]
+### Building Docker Image from Dockerfile
 ```bash
-docker-compose --env-file .env up -d
+docker build -t <tag_name>:<version>
 ```
 
-### start project using
+### start application using
 ```bash
-uvicorn app.main:app --reload
-```
-
-### Start celery to process the background jobs
-```bash
-celery -A app.task.celery worker --loglevel=info --pool=solo
+docker run -p <host_value>:8000 --env-file=.env
 ```
 
 ## API Documentation
+```bash
+http://0.0.0.0:8000/redoc
 ```
-http://127.0.0.1:8000/redoc
+
+## API SandBox
+```bash
+http://0.0.0.0:8000/docs
 ```
 
 ## Other Usage
-
-### To create a new migration follow the following
-```bash
-alembic init {name of migration file}
-```
-
-### create a migration version
-```bash
-alembic revision --autogenerate -m '<name of migration>'
-```
-
-### To run the migration
-```bash
-alembic upgrade head
-```
-
-### To downgrade migration use
-```bash
-alembic downgrade -1
-
-or
-
-alembic downgrade {version_name}
-```
 
 ## Contributing
 

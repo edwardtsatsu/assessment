@@ -6,6 +6,7 @@ WORKDIR /assessment
 
 RUN apt-get update \
     && apt-get install -y gcc postgresql libpq-dev \
+    && apt-get install -y screen \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -13,13 +14,11 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # Copy requirements file
-COPY ./requirements.txt /assessment/requirements.txt
+COPY . .
 
 # Install requirements
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application files
-COPY ./src /assessment/
 
 # Run migrations
 # RUN alembic upgrade head
@@ -27,5 +26,7 @@ COPY ./src /assessment/
 # Expose port
 EXPOSE 8000
 
+RUN chmod +x entrypoint.sh
+
 # Run application
-# CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+ENTRYPOINT ["./entrypoint.sh"]
