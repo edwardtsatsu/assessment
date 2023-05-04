@@ -44,12 +44,12 @@ docker run -p <host_value>:8000 --env-file=.env
 
 ## API Documentation
 ```bash
-http://0.0.0.0:8000/redoc
+http://127.0.0.1:8000/redoc
 ```
 
 ## API SandBox
 ```bash
-http://0.0.0.0:8000/docs
+http://127.0.0.1:8000/docs
 ```
 
 ## Other Usage
