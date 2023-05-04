@@ -58,6 +58,7 @@ class FileUpload(Base):
     file_type = Column(String)
     first_content = Column(Text)
     last_content = Column(Text)
+    file_path = Column(String)
     size = Column(Integer)
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, default=datetime.now(timezone.utc)
