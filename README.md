@@ -34,7 +34,7 @@ docker-compose down -v
 ## Additional Information [Not Compulsory]
 ### Building Docker Image from Dockerfile
 ```bash
-docker build -t <tag_name>:<version>
+docker build -t <tag_name>:<version> .
 ```
 
 ### start application using

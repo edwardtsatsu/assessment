@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     database_password: str
     database_username: str
     database_name: str
-    database_port: int
+    database_port: st
     database_host: str
     cloud_name: str
     api_key: str
