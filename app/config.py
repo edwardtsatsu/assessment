@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     database_username: str
     database_name: str
     database_port: str
-    database_host: str
+    database_host: int
     cloud_name: str
     api_key: str
     api_secret: str

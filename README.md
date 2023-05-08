@@ -39,7 +39,7 @@ docker build -t <tag_name>:<version> .
 
 ### start application using
 ```bash
-docker run -p <host_value>:8000 --env-file=.env
+docker run -p <host_value>:8000 --env-file=.env <tag_name>:<version>
 ```
 
 ## API Documentation
