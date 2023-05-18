@@ -6,6 +6,7 @@ from sqlalchemy.orm import joinedload
 from sqlalchemy.orm import attributes
 from fastapi import HTTPException, status
 import base64
+from app.exceptions.exception import DiagnosisException
 from app.logs.logs_conf import log_levels
 
 from app import schemas
@@ -14,7 +15,7 @@ from app.task import load_data_to_db
 from app.utils import save_file_to_cloudinary
 
 
-def create_diagnosis(diagnosis_request, db):
+async def create_diagnosis(diagnosis_request, db):
     # Check if diagnosis code already exists
     existing_diagnosis = (
         db.query(models.Diagnosis).filter_by(diag_code=diagnosis_request.code).first()
@@ -35,7 +36,9 @@ def create_diagnosis(diagnosis_request, db):
     try:
         db.commit()
     except IntegrityError as e:
-        log_levels().error(f"=========ROLLBACK EXCEPTION RECORD NOT SAVED {str(e)}==========")
+        log_levels().error(
+            f"=========ROLLBACK EXCEPTION RECORD NOT SAVED {str(e)}=========="
+        )
         db.rollback()
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Internal Server Error"
@@ -65,7 +68,7 @@ def create_diagnosis(diagnosis_request, db):
     )
 
 
-def get_diagnosis_by_id(diagnosis_id, db):
+async def get_diagnosis_by_id(diagnosis_id, db):
     diagnosis = (
         db.query(models.Diagnosis)
         .join(models.Category)
@@ -92,30 +95,35 @@ def get_diagnosis_by_id(diagnosis_id, db):
     )
 
 
-def delete_diagnosis_by_id(diagnosis_id, db):
-    diagnosis = (
-        db.query(models.Diagnosis)
-        .join(models.Category)
-        .options(joinedload(models.Diagnosis.category))
-        .filter(models.Diagnosis.id == diagnosis_id)
-        .first()
-    )
-    if not diagnosis:
-        log_levels().info("========= RECORD NOT FOUND=========== ERROR NON++")
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Diagnosis code not found"
+async def delete_diagnosis_by_id(diagnosis_id, db):
+    try:
+        diagnosis = (
+            db.query(models.Diagnosis)
+            .join(models.Category)
+            .options(joinedload(models.Diagnosis.category))
+            .filter(models.Diagnosis.id == diagnosis_id)
+            .first()
+        )
+        if not diagnosis:
+            log_levels().info("========= RECORD NOT FOUND=========== ERROR NON++")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Diagnosis code not found"
+            )
+
+        db.query(models.Category).filter(models.Category.id == diagnosis_id).delete(
+            synchronize_session=False
         )
 
-    db.query(models.Category).filter(models.Category.id == diagnosis_id).delete(
-        synchronize_session=False
-    )
+        db.delete(diagnosis)
+        db.commit()
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
+    except Exception as e:
+        log_levels().error(f"=========Error deleting diagnosis: {str(e)}==========")
+        # raise DiagnosisException(details=f"=========Error deleting diagnosis: {str(e)}==========")
 
-    db.delete(diagnosis)
-    db.commit()
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-def update_diagnosis_by_id(diagnosis_id, new_diagnosis, db):
+async def update_diagnosis_by_id(diagnosis_id, new_diagnosis, db):
     diagnosis = (
         db.query(models.Diagnosis).filter(models.Diagnosis.id == diagnosis_id).first()
     )
@@ -143,7 +151,7 @@ def update_diagnosis_by_id(diagnosis_id, new_diagnosis, db):
     }
 
 
-def all_diagnoses_codes(offset, limit, db):
+async def all_diagnoses_codes(offset, limit, db):
     diagnoses = db.query(models.Diagnosis).offset(offset).limit(limit).all()
     categories = (
         db.query(models.Category)

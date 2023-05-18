@@ -1,12 +1,33 @@
-from fastapi import FastAPI, Request, status, Response
+from fastapi import Depends, FastAPI, HTTPException, Request, status, Response
+from fastapi.security import APIKeyHeader
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, PlainTextResponse
+from starlette.middleware.base import BaseHTTPMiddleware
 
 from .routers import diagnosis
 
 app = FastAPI()
 
+api_key_header = APIKeyHeader(name="X-API-Key")
+
 app.include_router(diagnosis.router)
+
+async def verify_api_key(api_key: str = Depends(api_key_header)):
+    if api_key != "secret_api_key":
+        raise HTTPException(status_code=401, detail="Invalid API key")
+
+
+class AuthMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        try:
+            await verify_api_key(request.headers.get("X-API-Key"))
+        except HTTPException as ex:
+            return PlainTextResponse(str(ex), status_code=ex.status_code)
+
+        response = await call_next(request)
+        return response
+
+app.add_middleware(AuthMiddleware)
 
 
 @app.exception_handler(RequestValidationError)

@@ -25,7 +25,7 @@ router = APIRouter(prefix="/api/v1/diagnosis", tags=["Diagnosis"])
 async def post_diagnosis(
     diagnosis: schemas.DiagnosisRequest, db: Session = Depends(get_db)
 ):
-    return create_diagnosis(diagnosis, db)
+    return await create_diagnosis(diagnosis, db)
 
 
 @router.put("/{diagnosis_id}", response_model=schemas.DiagnosisUpdateResponse)
@@ -34,7 +34,7 @@ async def update_diagnosis(
     new_diagnosis: schemas.UpdateDiagnosisRequest,
     db: Session = Depends(get_db),
 ):
-    return update_diagnosis_by_id(diagnosis_id, new_diagnosis, db)
+    return await update_diagnosis_by_id(diagnosis_id, new_diagnosis, db)
 
 
 @router.get(
@@ -43,12 +43,12 @@ async def update_diagnosis(
     response_model=schemas.DiagnosisResponse,
 )
 async def get_diagnosis(diagnosis_id: uuid.UUID, db: Session = Depends(get_db)):
-    return get_diagnosis_by_id(diagnosis_id, db)
+    return await get_diagnosis_by_id(diagnosis_id, db)
 
 
 @router.delete("/{diagnosis_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_diagnosis(diagnosis_id: uuid.UUID, db: Session = Depends(get_db)):
-    return delete_diagnosis_by_id(diagnosis_id, db)
+    return await delete_diagnosis_by_id(diagnosis_id, db)
 
 
 @router.get("/", response_model=schemas.DiagnosesListResponse)
@@ -57,7 +57,7 @@ async def list_diagnosis_codes(
     limit: int = Query(default=20, le=1000),
     db: Session = Depends(get_db),
 ):
-    return all_diagnoses_codes(offset, limit, db)
+    return await all_diagnoses_codes(offset, limit, db)
 
 
 @router.post("/upload_file", status_code=status.HTTP_200_OK)
@@ -67,3 +67,4 @@ async def upload_csv(
     background_tasks.add_task(process_file, file)
     log_levels().info("File uploaded successfully, =====CALLING TASK SERVICE===")
     return {"detail": "File uploaded successfully and will be processed shortly."}
+
