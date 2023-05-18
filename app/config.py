@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     broker: str
     sendinblue_endpoint: str
     sender_email_add: str
-
+    api_key: str
 
     class Config:
         env_file = '.env'
