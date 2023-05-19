@@ -10,11 +10,9 @@ from app import schemas
 from app.models import models
 from app.database import SessionLocal
 from app.services.diagnosis import (
-    all_diagnoses_codes,
     create_diagnosis,
     get_diagnosis_by_id,
     delete_diagnosis_by_id,
-    update_diagnosis_by_id,
 )
 
 
