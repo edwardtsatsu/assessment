@@ -1,5 +1,6 @@
 from pydantic import BaseSettings
 
+
 # Validate the environment variable before the  booting the app
 class Settings(BaseSettings):
     database_password: str
@@ -19,6 +20,7 @@ class Settings(BaseSettings):
     api_key: str
 
     class Config:
-        env_file = '.env'
+        env_file = ".env"
+
 
 settings = Settings()

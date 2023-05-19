@@ -81,7 +81,9 @@ def load_data_to_db(csv_data, file_name, email_add):
             "=====Data loaded successfully, calling the email service to send email==="
         )
         response = send_email(email_add)
-        log_levels().info(f"=============== EMAIL RESPONSE ===== {response.status_code}=====")
+        log_levels().info(
+            f"=============== EMAIL RESPONSE ===== {response.status_code}====="
+        )
     except Exception as e:
         log_levels().error(
             f"+++++++++EXCEPTION+++++++++++ Error processing task: {str(e)} ++++++++++EXCEPTION+++++++++++"

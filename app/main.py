@@ -1,5 +1,6 @@
 from fastapi import Depends, FastAPI, HTTPException, Request, status, Response
 from fastapi.security import APIKeyHeader
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -9,8 +10,19 @@ from .routers import diagnosis
 
 app = FastAPI()
 
-api_key_header = APIKeyHeader(name="X-API-Key")
+origins = [
+    "*"
+]  # this is because of the purpose of the assignment, I would have been specific to a domain
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["*"],
+)
+
 app.include_router(diagnosis.router)
+api_key_header = APIKeyHeader(name="X-API-Key")
 
 
 async def verify_api_key(api_key: str = Depends(api_key_header)):

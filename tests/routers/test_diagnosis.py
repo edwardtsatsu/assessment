@@ -49,12 +49,11 @@ def test_update_diagnosis():
     update_payload = {"code": code, "full_desc": "The journey of what exist"}
 
     # Send a PUT request to update the diagnosis
-    response = client.put(
-        url=f"/api/v1/diagnosis/{id}", json=update_payload
-    )
+    response = client.put(url=f"/api/v1/diagnosis/{id}", json=update_payload)
 
     # Assert that the response status code is 200 OK
     assert response.status_code == status.HTTP_200_OK
+
 
 @pytest.fixture
 def test_get_diagnosis(client):
@@ -67,9 +66,7 @@ def test_get_diagnosis(client):
 def test_delete_diagnosis():
     id = test_create_diagnosis.id
 
-    response = client.delete(
-        url=f"/api/v1/diagnosis/{id}"
-    )
+    response = client.delete(url=f"/api/v1/diagnosis/{id}")
 
     # Assert that the response status code is 200 OK
     assert response.status_code == status.HTTP_204_NO_CONTENT

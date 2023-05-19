@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 import uuid
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy import TIMESTAMP, Column, ForeignKey, Integer,String, Text
+from sqlalchemy import TIMESTAMP, Column, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 from ..database import Base
 
@@ -27,12 +27,16 @@ class Diagnosis(Base):
     id = Column(
         UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, nullable=False
     )
-    category_id = Column(UUID(as_uuid=True), ForeignKey("categories.id"), nullable=False)
+    category_id = Column(
+        UUID(as_uuid=True), ForeignKey("categories.id"), nullable=False
+    )
     diag_code = Column(String, unique=True, index=True)
     full_code = Column(String)
     abb_desc = Column(String)
     full_desc = Column(String)
-    file_upload_id = Column(UUID(as_uuid=True), ForeignKey("file_uploads.id"), unique=True, nullable=True)
+    file_upload_id = Column(
+        UUID(as_uuid=True), ForeignKey("file_uploads.id"), unique=True, nullable=True
+    )
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, default=datetime.now(timezone.utc)
     )

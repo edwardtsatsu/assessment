@@ -27,9 +27,9 @@ def test_diagnosis_creation(db):
     diagnosis = models.Diagnosis(
         category_id=category.id,
         diag_code=code,
-        full_code='1324',
-        abb_desc='great point',
-        full_desc='I will be okay',
+        full_code="1324",
+        abb_desc="great point",
+        full_desc="I will be okay",
     )
 
     db.add(diagnosis)
@@ -55,7 +55,9 @@ def test_category_creation(db):
 
 
 def test_file_upload_creation(db):
-    file_upload = models.FileUpload(email_add="test@email.com", file_name='test.csv',file_type='csv')
+    file_upload = models.FileUpload(
+        email_add="test@email.com", file_name="test.csv", file_type="csv"
+    )
     db.add(file_upload)
     db.commit()
 
@@ -64,4 +66,3 @@ def test_file_upload_creation(db):
     assert file_upload.id is not None
     assert file_upload.email_add == "test@email.com"
     assert file_upload.file_name == "test.csv"
-

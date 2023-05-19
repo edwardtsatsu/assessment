@@ -9,7 +9,7 @@ cloudinary.config(
     api_secret=settings.api_secret,
 )
 
-
+# uncompleted
 def save_file_to_cloudinary(file_data):
     try:
         upload_result = cloudinary.uploader.upload(file_data)

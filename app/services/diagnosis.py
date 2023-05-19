@@ -15,7 +15,7 @@ from app.task import load_data_to_db
 from app.utils import save_file_to_cloudinary
 
 
-async def create_diagnosis(diagnosis_request, db):
+def create_diagnosis(diagnosis_request, db):
     # Check if diagnosis code already exists
     existing_diagnosis = (
         db.query(models.Diagnosis).filter_by(diag_code=diagnosis_request.code).first()
@@ -68,7 +68,7 @@ async def create_diagnosis(diagnosis_request, db):
     )
 
 
-async def get_diagnosis_by_id(diagnosis_id, db):
+def get_diagnosis_by_id(diagnosis_id, db):
     diagnosis = (
         db.query(models.Diagnosis)
         .join(models.Category)
@@ -95,7 +95,7 @@ async def get_diagnosis_by_id(diagnosis_id, db):
     )
 
 
-async def delete_diagnosis_by_id(diagnosis_id, db):
+def delete_diagnosis_by_id(diagnosis_id, db):
     try:
         diagnosis = (
             db.query(models.Diagnosis)
@@ -123,7 +123,7 @@ async def delete_diagnosis_by_id(diagnosis_id, db):
 
 
 
-async def update_diagnosis_by_id(diagnosis_id, new_diagnosis, db):
+def update_diagnosis_by_id(diagnosis_id, new_diagnosis, db):
     diagnosis = (
         db.query(models.Diagnosis).filter(models.Diagnosis.id == diagnosis_id).first()
     )
@@ -151,7 +151,7 @@ async def update_diagnosis_by_id(diagnosis_id, new_diagnosis, db):
     }
 
 
-async def all_diagnoses_codes(offset, limit, db):
+def all_diagnoses_codes(offset, limit, db):
     diagnoses = db.query(models.Diagnosis).offset(offset).limit(limit).all()
     categories = (
         db.query(models.Category)

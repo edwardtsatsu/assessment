@@ -15,7 +15,6 @@ from app.services.diagnosis import (
     get_diagnosis_by_id,
     delete_diagnosis_by_id,
     update_diagnosis_by_id,
-
 )
 
 
@@ -72,6 +71,7 @@ def test_get_diagnosis_by_id():
         full_desc=response.full_desc,
         created_at=response.created_at,
     )
+
 
 @pytest.fixture
 def test_delete_diagnosis_by_id(mock_db):
