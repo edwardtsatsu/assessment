@@ -1,6 +1,7 @@
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import joinedload
 from fastapi import HTTPException, Response, status
+from fastapi_pagination import Page, paginate
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import joinedload
 from sqlalchemy.orm import attributes
@@ -41,7 +42,7 @@ def create_diagnosis(diagnosis_request, db):
         )
         db.rollback()
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Internal Server Error"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal Server Error"
         )
 
     # Create diagnosis
@@ -151,8 +152,8 @@ def update_diagnosis_by_id(diagnosis_id, new_diagnosis, db):
     }
 
 
-def all_diagnoses_codes(offset, limit, db):
-    diagnoses = db.query(models.Diagnosis).offset(offset).limit(limit).all()
+def all_diagnoses_codes(params, db):
+    diagnoses = db.query(models.Diagnosis).all()
     categories = (
         db.query(models.Category)
         .filter(models.Category.id.in_([d.category_id for d in diagnoses]))
@@ -174,19 +175,7 @@ def all_diagnoses_codes(offset, limit, db):
             )
         )
 
-    total_diagnoses = db.query(models.Diagnosis).count()
-
-    return schemas.DiagnosesListResponse(
-        metadata={
-            "total_diagnoses": total_diagnoses,
-            "offset": offset,
-            "limit": limit,
-            "next_offset": offset + limit if offset + limit < total_diagnoses else None,
-            "prev_offset": offset - limit if offset - limit >= 0 else None,
-        },
-        data=results,
-    )
-
+    return paginate(results,params)
 
 def process_file(file: schemas.UploadFileRequest):
     try:

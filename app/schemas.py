@@ -53,6 +53,6 @@ class DiagnosisResponse(DiagnosisRequest):
     created_at: datetime
 
 
-class DiagnosesListResponse(BaseModel):
-    metadata: dict
-    data: List[DiagnosisResponse]
+# class DiagnosesListResponse(BaseModel):
+#     metadata: dict
+#     data: List[DiagnosisResponse]

@@ -22,32 +22,32 @@ app.add_middleware(
 )
 
 app.include_router(diagnosis.router)
-api_key_header = APIKeyHeader(name="X-API-Key")
+# api_key_header = APIKeyHeader(name="X-API-Key")
 
 
-async def verify_api_key(api_key: str = Depends(api_key_header)):
-    if api_key != settings.api_key:
-        raise HTTPException(status_code=401, detail="Invalid API key received")
+# async def verify_api_key(api_key: str = Depends(api_key_header)):
+#     if api_key != settings.api_key:
+#         raise HTTPException(status_code=401, detail="Invalid API key received")
 
 
-class AuthMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request: Request, call_next):
-        api_key = request.headers.get("X-API-Key")
-        if not api_key:
-            error_message = {"detail": "API key is missing in the request"}
-            return JSONResponse(content=error_message, status_code=401)
+# class AuthMiddleware(BaseHTTPMiddleware):
+#     async def dispatch(self, request: Request, call_next):
+#         api_key = request.headers.get("X-API-Key")
+#         if not api_key:
+#             error_message = {"detail": "API key is missing in the request"}
+#             return JSONResponse(content=error_message, status_code=401)
 
-        try:
-            await verify_api_key(api_key)
-        except HTTPException as ex:
-            error_message = {"detail": "Invalid API key received"}
-            return JSONResponse(content=error_message, status_code=ex.status_code)
+#         try:
+#             await verify_api_key(api_key)
+#         except HTTPException as ex:
+#             error_message = {"detail": "Invalid API key received"}
+#             return JSONResponse(content=error_message, status_code=ex.status_code)
 
-        response = await call_next(request)
-        return response
+#         response = await call_next(request)
+#         return response
 
 
-app.add_middleware(AuthMiddleware)
+# app.add_middleware(AuthMiddleware)
 
 
 @app.exception_handler(RequestValidationError)

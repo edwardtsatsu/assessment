@@ -1,5 +1,6 @@
 from fastapi import BackgroundTasks, Depends, Query, status, APIRouter
 import uuid
+from fastapi_pagination import Params, Page
 from sqlalchemy.orm import Session
 from app.logs.logs_conf import log_levels
 
@@ -51,13 +52,12 @@ async def delete_diagnosis(diagnosis_id: uuid.UUID, db: Session = Depends(get_db
     return delete_diagnosis_by_id(diagnosis_id, db)
 
 
-@router.get("/", response_model=schemas.DiagnosesListResponse)
+@router.get("/", response_model=Page[schemas.DiagnosisResponse])
 async def list_diagnosis_codes(
-    offset: int = Query(default=0, ge=0),
-    limit: int = Query(default=20, le=1000),
+    params: Params = Depends(),
     db: Session = Depends(get_db),
 ):
-    return all_diagnoses_codes(offset, limit, db)
+    return all_diagnoses_codes(params, db)
 
 
 @router.post("/upload_file", status_code=status.HTTP_200_OK)
